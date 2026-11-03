@@ -1,0 +1,10 @@
+# Documentación
+
+| Archivo | Contenido |
+| --- | --- |
+| `planificacion_TrAIn.pdf` | Lista de tareas T01 a T27, recursos y cronograma (T01) |
+| `acta_constitucion_TrAIn.txt` | Acta de constitución, en el formato del wiki de Moodle (actividad 6) |
+| `cronograma.md` | Cronograma en Mermaid, visible en GitHub |
+| `contexto_TrAIn.md` | Resumen del proyecto, decisiones fijadas, estado y pendientes |
+
+Si cambia una decisión, una fecha o un criterio, actualiza `contexto_TrAIn.md`, `CLAUDE.md`, el acta del wiki y el tablero.

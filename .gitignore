@@ -1,0 +1,41 @@
+# Secretos
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Datos generados y modelos entrenados
+datos/
+datos_*/
+*.parquet
+*.csv.gz
+ml/artifacts/
+*.joblib
+*.pkl
+*.ubj
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.iml
+*.apk
+*.aab
+captures/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

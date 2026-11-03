@@ -1,0 +1,28 @@
+id	fase	titulo	responsable	personal	medios	inicio	fin	horas	depende	hito	estado
+T01	Gestión	Planificación: lista de tareas, recursos y cronograma	Pablo	P, S, A	GitHub Projects, procesador de textos	2026-11-03	2026-11-06	6	—	H1	pendiente
+T02	Gestión	Repositorio, tablero en GitHub Projects y entorno de desarrollo	Pablo	P, S, A	GitHub, Git, Python 3.11, Android Studio, Claude Code	2026-11-04	2026-11-09	6	—	H1	pendiente
+T03	Gestión	Definición del contrato de la API entre app y backend	Pablo	P, S	FastAPI (OpenAPI), esquema de la BD, documento compartido	2026-11-09	2026-11-12	4	T02, T06	H2	pendiente
+T04	Datos	Diseño del simulador de atletas (perfil, fuerza, fatiga, sueño, estilos de carga)	Sergio	S, A	Bibliografía de ciencias del deporte, Python	2026-10-25	2026-10-25	6	—	H2	hecha
+T05	Datos	Generador de datos sintéticos (42 ejercicios, salida por lotes en Parquet)	Sergio	S	Python, pandas, numpy, pyarrow, Claude Code	2026-10-25	2026-10-25	10	—	H2	hecha
+T06	Datos	Esquema PostgreSQL (14 tablas, capas 1–3), carga y script de validación	Sergio	S	PostgreSQL 16, psycopg / psql, scikit-learn	2026-10-25	2026-10-25	6	—	H2	hecha
+T07	Datos	Ajustes del simulador y dataset de entrenamiento (10.000 usuarios)	Sergio	S, A	Python, pyarrow, portátil (8 núcleos)	2026-11-04	2026-11-08	6	T04, T05, T06	H2	pendiente
+T08	Datos	PostgreSQL compartido en Docker y BD de demo (200 usuarios)	Sergio	S	Docker, PostgreSQL 16, cargar_postgres.py	2026-11-09	2026-11-12	4	T06, T07	H2	pendiente
+T09	Motor de IA	Ingeniería de variables a partir del historial (base: validar.py)	Adrián	A	Python, pandas, Parquet	2026-11-09	2026-11-15	8	T07	H3	pendiente
+T10	Motor de IA	Modelo de regresión del cambio de carga (cambio_kg)	Adrián	A	scikit-learn, XGBoost, portátil	2026-11-16	2026-11-24	10	T09	H3	pendiente
+T11	Motor de IA	Modelo de clasificación (entrenar/suave/descansar) y regresión de fatiga	Adrián	A	scikit-learn, XGBoost, portátil	2026-11-23	2026-12-01	10	T09	H3	pendiente
+T12	Motor de IA	Evaluación frente a líneas base y ajuste de modelos	Adrián	A, S	scikit-learn, Jupyter	2026-12-02	2026-12-09	8	T10, T11	H3	pendiente
+T13	Backend	Backend base: usuarios, registro, historial y derivados (simulador/derivados.py)	Sergio	S	FastAPI, PostgreSQL, Claude Code	2026-11-13	2026-11-25	10	T03, T08	H3	pendiente
+T14	Backend	Endpoints de recomendaciones y progreso con los modelos	Sergio	S, A	FastAPI, modelos entrenados	2026-12-02	2026-12-10	8	T10, T11, T13	H3	pendiente
+T15	Backend	Pruebas unitarias del backend y del Motor de IA	Sergio	S, A	pytest, GitHub Copilot	2026-12-11	2026-12-17	8	T14	H5	pendiente
+T16	App Android	Proyecto Android: estructura, navegación y tema Material 3	Pablo	P	Android Studio, Kotlin, Jetpack Compose, emulador	2026-11-12	2026-11-20	8	—	H3	pendiente
+T17	App Android	Pantallas Registrar (con cuestionario previo) y Hoy conectadas al backend	Pablo	P	Android Studio, Retrofit, emulador / móvil Android	2026-11-21	2026-12-04	14	T03, T13, T16	H3	pendiente
+T18	App Android	Pantalla Progreso con gráficas por ejercicio	Pablo	P	Android Studio, librería de gráficas	2026-12-09	2026-12-14	6	T14, T17	H3	pendiente
+T19	Agente	Base de conocimiento (RAG) e instrucciones de seguridad	Pablo	P, S, A	Fuentes fiables de entrenamiento, Python	2026-11-30	2026-12-06	8	—	H4	pendiente
+T20	Agente	Capa LLM intercambiable, herramientas y endpoint /chat	Pablo	P, S	API de Claude u OpenAI, FastAPI	2026-12-07	2026-12-14	10	T13, T19	H4	pendiente
+T21	Agente	Pantalla Chat en la app	Pablo	P	Android Studio, Jetpack Compose	2026-12-14	2026-12-17	6	T20	H4	pendiente
+T22	Opcional	Módulo de Reglas: hidratación y macronutrientes (opcional)	Adrián	A	Python, FastAPI	2026-12-10	2026-12-16	6	H1 a H4 cumplidos	H5	pendiente
+T23	Integración	Integración de extremo a extremo y corrección de errores	Pablo	P, S, A	Backend, app, emulador / móvil Android	2026-12-17	2026-12-20	12	T15, T18, T21	H5	pendiente
+T24	Integración	Evaluación del agente (30 preguntas) y comparativa Claude / OpenAI	Pablo	P, S, A	API de Claude y OpenAI, hoja de cálculo	2026-12-17	2026-12-20	8	T15, T18, T21	H5	pendiente
+T25	Cierre	Elaboración del informe final (memoria)	Pablo	P, S, A	Procesador de textos, resultados de evaluación	2027-01-07	2027-01-11	18	T23, T24	H6	pendiente
+T26	Cierre	Elaboración de la presentación y vídeo de demostración	Pablo	P, S, A	Software de presentaciones, grabador de pantalla	2027-01-08	2027-01-12	10	T25	H7	pendiente
+T27	Cierre	Ensayo y presentación del proyecto	Pablo	P, S, A	Presentación, app instalada en móvil	2027-01-12	2027-01-13	4	T26	H7	pendiente

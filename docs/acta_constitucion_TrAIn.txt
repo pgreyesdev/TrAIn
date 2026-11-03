@@ -1,0 +1,190 @@
+= Nombre del proyecto =
+El proyecto será conocido como '''TrAIn''': una aplicación Android que actúa como entrenador personal en el gimnasio. Combina un Motor de IA basado en Machine Learning, que recomienda el cambio de carga de cada ejercicio, el estado del día (entrenar, entrenar suave o descansar) y la fatiga del usuario, con un agente conversacional al que el usuario puede preguntar sobre su entrenamiento.
+
+= Miembros, roles y responsabilidades =
+{|
+! Miembro !! Rol !! Responsabilidades
+|-
+| Pablo García de los Reyes || Coordinación, Agente conversacional y App Android || Planificación y seguimiento del proyecto; integración del LLM por API (Claude u OpenAI), base de conocimiento (RAG), herramientas del agente y endpoints del agente en el backend; desarrollo de la aplicación Android en Kotlin con Jetpack Compose (registro, panel de recomendaciones y chat); evaluación del agente y comparativa entre proveedores.
+|-
+| Sergio Rosales Calzadilla || Datos, Módulo de Registro y Backend || Simulador y generador de datos sintéticos; base de datos PostgreSQL; Módulo de Registro; backend en FastAPI (API documentada para la app, custodia de la clave del LLM y control de gasto); despliegue del backend.
+|-
+| Adrián Hernández Herrera || Motor de IA y Módulo de Reglas || Preparación de variables a partir del historial; entrenamiento, ajuste y evaluación de los modelos (Random Forest / XGBoost) de cambio de carga, estado del día y fatiga; endpoints de predicción en el backend; calculadora de hidratación y macronutrientes.
+|}
+
+Responsabilidades compartidas: Sergio y Adrián acuerdan el formato de los datos que genera el simulador y consume el Motor de IA; Pablo define con Sergio el contrato de la API entre la app y el backend. Todos los miembros revisan el código de los compañeros, escriben pruebas unitarias de su módulo, revisan el código generado con agentes de codificación y participan en la memoria final.
+
+= Propósito y justificación del proyecto =
+'''Propósito.''' Desarrollar un entrenador personalizado para Android que ayude al usuario a progresar en el gimnasio. A partir de sus entrenamientos y de un breve cuestionario diario, un Motor de IA recomendará cuánto subir, mantener o bajar la carga de cada ejercicio, si conviene entrenar, entrenar suave o descansar, y una estimación de la fatiga acumulada. Un agente conversacional basado en un LLM (Claude u OpenAI) responderá dudas sobre entrenamiento y explicará las recomendaciones a partir de los datos del propio usuario. Como funcionalidad adicional, la app podrá orientar sobre hidratación y nutrición.
+
+'''Justificación.''' Las aplicaciones más utilizadas, como Hevy, funcionan como un cuaderno digital: permiten anotar pesos y entrenamientos, pero no incorporan inteligencia artificial ni modelos predictivos. Otras apps que sí ajustan cargas no explican el porqué de sus recomendaciones ni permiten preguntar sobre ellas. TrAIn aporta una capa de decisión personalizada y un asistente que la hace comprensible, combinando aprendizaje supervisado sobre datos tabulares con modelos de lenguaje.
+
+= Requisitos del alto nivel =
+'''Funcionales'''
+* Registrar desde la app los entrenamientos del usuario: ejercicio, series, repeticiones, carga y esfuerzo percibido (RPE de 6 a 10).
+* Recoger antes de entrenar un cuestionario corto opcional (sueño, estado del cuerpo, energía, otro deporte y dolor), que se usa como entrada de los modelos.
+* Predecir el cambio de carga recomendado para cada ejercicio en la siguiente sesión (regresión), limitado por una regla de seguridad.
+* Clasificar el estado del día en entrenar, entrenar suave o descansar (clasificación multiclase).
+* Estimar el nivel de fatiga de 0 a 100 a partir del historial reciente.
+* Mostrar en la app las recomendaciones y la evolución del usuario de forma visual e interactiva.
+* Ofrecer un chat con un agente conversacional que responda dudas sobre entrenamiento y explique las recomendaciones consultando el historial del usuario y el Motor de IA.
+* (Opcional) Calcular pautas de hidratación y macronutrientes según el objetivo del usuario mediante reglas.
+
+'''No funcionales'''
+* Rendimiento: predicción del modelo en menos de 1 segundo; primera respuesta del agente en menos de 3 segundos.
+* Seguridad: la clave de la API del LLM se guarda solo en el backend y nunca se incluye en la app.
+* Seguridad del usuario: la subida de carga se limita (+5 % como máximo, hasta 2,5 kg en tren superior y 5 kg en inferior); el agente no da consejo médico y recomienda acudir a un profesional ante dolor o lesiones; todas las recomendaciones son orientativas.
+* Coste: uso de la API del LLM limitado por un tope de gasto fijado de antemano y un límite de mensajes por usuario.
+* Datos: modelos entrenados con datos sintéticos generados por un simulador propio; durante el desarrollo no se envían datos personales reales al proveedor del LLM.
+* Código: estructura limpia y modular, con pruebas unitarias; el backend calcula las variables con las mismas funciones que el entrenamiento; el proveedor del LLM se cambia por configuración.
+
+= Descripción del Proyecto y Entregables =
+La arquitectura sigue el esquema: App Android → Backend propio (FastAPI) → Motor de IA, base de datos PostgreSQL y API del LLM. El sistema se divide en seis módulos, ordenados por prioridad:
+{|
+! Módulo !! Descripción !! Tecnologías !! Prioridad
+|-
+| Datos y Módulo de Registro || Simulador de usuarios sintéticos (42 ejercicios, fatiga, sueño, estilos de carga) y base de datos con el registro de sesiones, series y cuestionario. || Python, pandas, Parquet, PostgreSQL 16 || Núcleo
+|-
+| Motor de IA || Modelos de cambio de carga (regresión), estado del día (clasificación multiclase) y fatiga (regresión). || pandas, numpy, scikit-learn, XGBoost || Núcleo
+|-
+| Backend || API que expone el registro, las predicciones y el agente a la app; custodia la clave del LLM y controla el gasto. || Python, FastAPI, Docker || Núcleo
+|-
+| App Android || Aplicación móvil para responder el cuestionario, registrar entrenamientos, ver recomendaciones y evolución, y chatear con el agente. || Kotlin, Jetpack Compose || Núcleo
+|-
+| Agente conversacional || LLM por API con recuperación sobre fuentes fiables de entrenamiento (RAG) y herramientas para consultar el historial del usuario y el Motor de IA. || API de Claude u OpenAI, Python || Ampliación
+|-
+| Módulo de Reglas || Calculadora de pautas de hidratación y macronutrientes según peso, actividad y objetivo del usuario. || Python || Opcional
+|}
+
+'''Entregables'''
+# Simulador y dataset de datos sintéticos, con su script de validación.
+# Base de datos PostgreSQL con el esquema de catálogo, registro y derivados.
+# Modelos entrenados de cambio de carga, estado y fatiga, con su informe de evaluación.
+# Backend en FastAPI con la API documentada.
+# Aplicación Android (APK) en Kotlin con Jetpack Compose.
+# Agente conversacional integrado en la app, con su conjunto de preguntas de evaluación y la comparativa entre Claude y OpenAI.
+# Repositorio de código con pruebas unitarias y documentación de instalación y uso.
+# Memoria final y presentación del proyecto.
+
+'''Fuera de alcance'''
+* Entrenamiento o ajuste fino de un modelo de lenguaje propio (se usa un LLM existente por API).
+* Versión para iOS y publicación de la app en Google Play.
+* Uso de datos reales de usuarios o de dispositivos wearables.
+* Planes de nutrición detallados o recomendaciones médicas.
+
+= Resumen del cronograma de hitos del proyecto =
+{|
+! Hito !! Descripción !! Fecha prevista
+|-
+| H1 || Planificación aprobada; repositorio y tablero de GitHub Projects preparados || 09/11/2026
+|-
+| H2 || Dataset de entrenamiento generado y base de datos compartida de demo operativa || 12/11/2026
+|-
+| H3 || App con registro, recomendaciones y progreso conectada al backend || 14/12/2026
+|-
+| H4 || Agente conversacional con RAG y herramientas integrado en la app || 17/12/2026
+|-
+| H5 || MVP integrado y evaluado (no se añaden funciones nuevas) || 20/12/2026
+|-
+| H6 || Informe final cerrado || 11/01/2027
+|-
+| H7 || Presentación del proyecto || 13/01/2027
+|}
+
+= Objetivos medibles del proyecto y criterio de éxito asociado =
+{|
+! Objetivo !! Métrica !! Criterio de éxito
+|-
+| Predecir el cambio de carga de la siguiente sesión || Error absoluto medio (MAE) sobre usuarios no vistos || 1 kg o menos, y al menos un 40 % mejor que repetir la carga anterior
+|-
+| Recomendar correctamente entrenar, entrenar suave o descansar || F1-score macro || 0,65 o más (0,70 o más los días con cuestionario)
+|-
+| Estimar la fatiga || MAE en la escala 0–100 || 6 o menos
+|-
+| Respuestas correctas del agente || Respuestas correctas sobre unas 30 preguntas de referencia, revisadas por el equipo || 80 % o más
+|-
+| Agente seguro || Preguntas sobre dolor o lesiones en las que el agente deriva a un profesional || 100 %
+|-
+| Respuesta rápida || Tiempo de predicción del modelo / tiempo hasta la primera respuesta del agente || Menos de 1 s / menos de 3 s
+|-
+| Coste controlado || Gasto total en la API del LLM || Dentro del tope fijado (20 €)
+|-
+| Código mantenible || Cobertura de pruebas unitarias en backend y Motor de IA || 70 % o más
+|-
+| Funcionalidad completa || Módulos de núcleo integrados (Datos y Registro, Motor de IA, Backend y App Android) || 4 de 4 funcionando de extremo a extremo
+|}
+
+Los valores objetivo se han fijado a partir de una primera validación con datos sintéticos, en la que un modelo sencillo obtuvo un MAE de 0,70 kg (frente a 1,76 kg de repetir la carga), un F1 de 0,65 (0,73 con cuestionario) y un MAE de fatiga de 5,6. Las métricas miden cuánto aprende el modelo las reglas del simulador, no su acierto con usuarios reales.
+
+= Recursos Pre asignados =
+'''Humanos'''
+* Tres miembros del equipo: Pablo García de los Reyes, Sergio Rosales Calzadilla y Adrián Hernández Herrera.
+
+'''Software'''
+* Python con pandas, numpy, pyarrow, scikit-learn, XGBoost y FastAPI.
+* PostgreSQL 16 en Docker.
+* Kotlin, Jetpack Compose y Android Studio.
+* API de un LLM: Claude (Anthropic) u OpenAI.
+* Control de versiones y gestión: Git, GitHub y GitHub Projects.
+* Agentes de codificación: GitHub Copilot y Claude Code, para acelerar la maquetación de la interfaz, los scripts de datos y las pruebas unitarias.
+
+'''Hardware'''
+* Ordenadores personales del equipo y móviles Android propios o emulador de Android Studio. Los modelos sobre datos tabulares no requieren GPU.
+
+'''Datos'''
+* Datos sintéticos generados con un simulador propio (usuarios, rutinas, sesiones, series y cuestionario).
+* Fuentes públicas y fiables sobre entrenamiento y nutrición para la base de conocimiento del agente.
+
+'''Presupuesto'''
+* Todas las herramientas son gratuitas salvo la API del LLM, cuyo gasto se limita a un tope de 20 € fijado antes de empezar.
+
+= Gestión del Proyecto =
+* '''Metodología:''' iterativa e incremental, con entregas parciales que siguen los hitos H1 a H7. Se prioriza el núcleo y el agente solo se aborda con el flujo básico funcionando.
+* '''Seguimiento:''' reunión semanal del equipo para revisar avances, problemas y próximas tareas.
+* '''Organización de tareas:''' issues y tablero de GitHub Projects (vista Roadmap), con un responsable por tarea.
+* '''Control de versiones:''' una rama por funcionalidad y revisión por otro miembro antes de integrar en la rama principal.
+* '''Contrato entre app y backend:''' la API se define y documenta al inicio para que la app y el backend se desarrollen en paralelo.
+* '''Control de costes:''' revisión semanal del gasto en la API del LLM.
+* '''Comunicación:''' grupo de mensajería del equipo para el día a día y este wiki para la documentación oficial.
+* '''Toma de decisiones:''' por consenso; en caso de empate, decide el coordinador.
+* '''Control de cambios:''' cualquier cambio de alcance o calendario se acuerda en reunión y se refleja en este wiki.
+
+= Riesgos del Proyecto =
+{|
+! Riesgo !! Impacto !! Respuesta prevista
+|-
+| Alcance demasiado amplio para tres personas || Alto || Priorizar el núcleo; el agente es ampliación y el Módulo de Reglas es opcional
+|-
+| Curva de aprendizaje de Kotlin y Jetpack Compose || Alto || Empezar la app pronto con pantallas sencillas y apoyarse en agentes de codificación
+|-
+| El agente da información incorrecta o peligrosa sobre salud || Alto || RAG con fuentes fiables, instrucciones de seguridad, derivación a profesionales y evaluación con preguntas de riesgo
+|-
+| Recomendaciones de carga inadecuadas que supongan riesgo de lesión || Alto || Regla de seguridad que limita la subida de carga y aviso de uso orientativo
+|-
+| Los datos sintéticos no reflejan bien la progresión real || Alto || Simulación basada en reglas conocidas de fuerza, fatiga y recuperación, y limitaciones documentadas en la memoria
+|-
+| Los modelos sobreajustan a las reglas de la simulación || Medio || Evaluación con usuarios no vistos, comparación con líneas base y ruido en los datos
+|-
+| Se supera el tope de gasto en la API del LLM || Medio || Límite de mensajes por usuario, modelos más económicos durante el desarrollo y seguimiento semanal
+|-
+| Exposición de la clave de la API || Medio || La clave solo existe en el backend; la app nunca llama directamente al proveedor
+|-
+| Caída o cambios en la API del proveedor || Bajo || Capa intercambiable entre Claude y OpenAI
+|-
+| Errores en el código generado por agentes de codificación || Medio || Revisión por pares y pruebas unitarias antes de integrar
+|}
+
+= Anexos =
+'''Trabajos similares'''
+* Hevy: aplicación de registro de entrenamientos muy extendida, sin inteligencia artificial ni modelo predictivo.
+* Otras apps con ajuste adaptativo de cargas (por ejemplo Fitbod o Alpha Progression), que no ofrecen un asistente conversacional que explique sus recomendaciones.
+
+'''Glosario'''
+* '''Regresión:''' tarea de aprendizaje supervisado que predice un valor numérico (el cambio de carga o la fatiga).
+* '''Clasificación multiclase:''' tarea que asigna una de varias categorías (entrenar, entrenar suave o descansar).
+* '''Random Forest / XGBoost:''' modelos basados en conjuntos de árboles de decisión, adecuados para datos tabulares.
+* '''LLM:''' modelo de lenguaje de gran tamaño, como Claude u OpenAI GPT, usado aquí mediante API.
+* '''RAG (generación aumentada por recuperación):''' técnica que busca información en una base de conocimiento y la entrega al LLM para que base en ella su respuesta.
+* '''Esfuerzo percibido (RPE):''' escala con la que el usuario valora la dureza de una serie; en la app va de 6 a 10.
+* '''e1RM:''' estimación del peso máximo que el usuario podría levantar una vez, calculada a partir de una serie.
+* '''Datos sintéticos:''' datos generados artificialmente por un simulador que imitan el comportamiento de usuarios reales.

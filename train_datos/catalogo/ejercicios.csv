@@ -1,0 +1,43 @@
+id,grupo,nombre_es,nombre_en,patron,mecanica,equipamiento,tipo_carga,lateralidad,incremento_kg,reps_min,reps_max,factor_fatiga,ratio_fuerza_ref,en_modelo_carga,musculos
+1,Pecho,Press banca con barra,Barbell Bench Press,empuje_horizontal,compuesto,barra,externa,bilateral,2.5,3,10,0.7,1.15,1,pectoral:1;triceps:0.5;deltoides_anterior:0.5
+2,Pecho,Press inclinado con mancuernas,Incline Dumbbell Press,empuje_horizontal,compuesto,mancuerna,externa,bilateral,2,6,12,0.5,0.38,1,pectoral:1;deltoides_anterior:0.6;triceps:0.4
+3,Pecho,Press inclinado con barra,Incline Barbell Bench Press,empuje_horizontal,compuesto,barra,externa,bilateral,2.5,4,10,0.6,0.95,1,pectoral:1;deltoides_anterior:0.6;triceps:0.5
+4,Pecho,Press de pecho en máquina,Machine Chest Press,empuje_horizontal,compuesto,maquina_placas,externa,bilateral,2.5,8,15,0.4,1.1,1,pectoral:1;triceps:0.4;deltoides_anterior:0.4
+5,Pecho,Cruces en polea,Cable Crossover,aislamiento_superior,aislamiento,polea,externa,bilateral,2.5,10,20,0.25,0.18,1,pectoral:1;deltoides_anterior:0.3
+6,Pecho,Pec Deck,Pec Deck,aislamiento_superior,aislamiento,maquina_placas,externa,bilateral,2.5,10,15,0.25,0.6,1,pectoral:1
+7,Espalda,Jalón al pecho,Lat Pulldown,tiron_vertical,compuesto,polea,externa,bilateral,2.5,6,12,0.5,0.9,1,dorsal:1;biceps:0.5;deltoides_posterior:0.3
+8,Espalda,Remo con barra,Barbell Row,tiron_horizontal,compuesto,barra,externa,bilateral,2.5,5,10,0.7,0.95,1,dorsal:1;trapecio:0.5;biceps:0.4;lumbar:0.4
+9,Espalda,Dominadas,Pull-ups,tiron_vertical,compuesto,peso_corporal,corporal_lastre,bilateral,2.5,3,10,0.6,1.3,1,dorsal:1;biceps:0.6;deltoides_posterior:0.3
+10,Espalda,Remo sentado en polea,Seated Cable Row,tiron_horizontal,compuesto,polea,externa,bilateral,2.5,8,12,0.45,0.9,1,dorsal:1;trapecio:0.5;biceps:0.4
+11,Espalda,Remo unilateral con mancuerna,Single Arm Dumbbell Row,tiron_horizontal,compuesto,mancuerna,externa,unilateral,2,6,12,0.4,0.45,1,dorsal:1;biceps:0.4;deltoides_posterior:0.3
+12,Espalda,Remo en máquina con apoyo,Chest-supported Machine Row,tiron_horizontal,compuesto,maquina_placas,externa,bilateral,2.5,8,12,0.35,0.95,1,dorsal:1;trapecio:0.5;biceps:0.3
+13,Cuádriceps,Sentadilla trasera,Barbell Back Squat,sentadilla,compuesto,barra,externa,bilateral,2.5,3,8,1.0,1.5,1,cuadriceps:1;gluteo:0.6;aductores:0.4;lumbar:0.3
+14,Cuádriceps,Prensa 45°,Leg Press 45°,sentadilla,compuesto,maquina_placas,externa,bilateral,5,8,15,0.6,2.8,1,cuadriceps:1;gluteo:0.5;aductores:0.3
+15,Cuádriceps,Extensiones de cuádriceps,Leg Extension,aislamiento_inferior,aislamiento,maquina_placas,externa,bilateral,2.5,10,15,0.25,0.8,1,cuadriceps:1
+16,Cuádriceps,Sentadilla búlgara,Bulgarian Split Squat,unilateral_pierna,compuesto,mancuerna,externa,unilateral,2,6,12,0.6,0.4,1,cuadriceps:1;gluteo:0.7;aductores:0.3
+17,Cuádriceps,Sentadilla Hack,Hack Squat,sentadilla,compuesto,maquina_guiada,externa,bilateral,5,6,12,0.7,1.6,1,cuadriceps:1;gluteo:0.5
+18,Cuádriceps,Sentadilla frontal,Barbell Front Squat,sentadilla,compuesto,barra,externa,bilateral,2.5,3,8,0.9,1.2,1,cuadriceps:1;gluteo:0.5;abdomen:0.3;lumbar:0.3
+19,Cadena posterior,Peso muerto convencional,Barbell Deadlift,bisagra_cadera,compuesto,barra,externa,bilateral,2.5,2,6,1.0,1.8,1,gluteo:1;isquiosurales:0.7;lumbar:0.7;trapecio:0.4;antebrazo:0.3
+20,Cadena posterior,Peso muerto rumano,Romanian Deadlift,bisagra_cadera,compuesto,barra,externa,bilateral,2.5,6,10,0.8,1.3,1,isquiosurales:1;gluteo:0.7;lumbar:0.5
+21,Cadena posterior,Hip Thrust con barra,Barbell Hip Thrust,bisagra_cadera,compuesto,barra,externa,bilateral,2.5,6,12,0.5,1.7,1,gluteo:1;isquiosurales:0.3
+22,Cadena posterior,Curl femoral tumbado,Lying Leg Curl,aislamiento_inferior,aislamiento,maquina_placas,externa,bilateral,2.5,8,15,0.25,0.5,1,isquiosurales:1
+23,Cadena posterior,Curl femoral sentado,Seated Leg Curl,aislamiento_inferior,aislamiento,maquina_placas,externa,bilateral,2.5,8,15,0.25,0.6,1,isquiosurales:1
+24,Cadena posterior,Abducciones en máquina,Seated Machine Hip Abduction,aislamiento_inferior,aislamiento,maquina_placas,externa,bilateral,2.5,12,20,0.15,0.9,1,gluteo:1
+25,Hombro,Press militar de pie,Overhead Press,empuje_vertical,compuesto,barra,externa,bilateral,2.5,3,8,0.6,0.7,1,deltoides_anterior:1;triceps:0.5;deltoides_lateral:0.3
+26,Hombro,Press sentado con mancuernas,Seated Dumbbell Shoulder Press,empuje_vertical,compuesto,mancuerna,externa,bilateral,2,6,12,0.45,0.3,1,deltoides_anterior:1;triceps:0.4;deltoides_lateral:0.4
+27,Hombro,Elevaciones laterales con mancuernas,Dumbbell Lateral Raise,aislamiento_superior,aislamiento,mancuerna,externa,bilateral,1,10,20,0.15,0.14,1,deltoides_lateral:1
+28,Hombro,Elevaciones laterales en polea,Cable Lateral Raise,aislamiento_superior,aislamiento,polea,externa,unilateral,1,12,20,0.15,0.1,1,deltoides_lateral:1
+29,Hombro,Pájaros en máquina,Reverse Pec Deck,aislamiento_superior,aislamiento,maquina_placas,externa,bilateral,2.5,12,20,0.15,0.45,1,deltoides_posterior:1;trapecio:0.3
+30,Hombro,Face Pull,Face Pull,aislamiento_superior,aislamiento,polea,externa,bilateral,2.5,12,20,0.15,0.35,1,deltoides_posterior:1;trapecio:0.5
+31,Brazos,Curl con barra,Barbell Biceps Curl,aislamiento_superior,aislamiento,barra,externa,bilateral,2,8,12,0.2,0.5,1,biceps:1;antebrazo:0.3
+32,Brazos,Curl alterno con mancuernas,Alternating Dumbbell Curl,aislamiento_superior,aislamiento,mancuerna,externa,unilateral,2,8,12,0.15,0.22,1,biceps:1;antebrazo:0.3
+33,Brazos,Curl martillo,Hammer Curl,aislamiento_superior,aislamiento,mancuerna,externa,bilateral,2,8,12,0.15,0.24,1,biceps:1;antebrazo:0.6
+34,Brazos,Extensión en polea con cuerda,Cable Triceps Rope Pushdown,aislamiento_superior,aislamiento,polea,externa,bilateral,2.5,10,15,0.15,0.4,1,triceps:1
+35,Brazos,Press francés,Skull Crushers,aislamiento_superior,aislamiento,barra,externa,bilateral,2.5,8,12,0.2,0.45,1,triceps:1
+36,Brazos,Extensión overhead en polea,Overhead Cable Triceps Extension,aislamiento_superior,aislamiento,polea,externa,bilateral,2.5,10,15,0.15,0.4,1,triceps:1
+37,Core y gemelos,Elevación de talones de pie,Standing Calf Raise,gemelo,aislamiento,maquina_placas,externa,bilateral,5,8,15,0.15,1.5,1,gemelo:1
+38,Core y gemelos,Elevación de talones sentado,Seated Calf Raise,gemelo,aislamiento,maquina_guiada,externa,bilateral,2.5,10,20,0.1,0.9,1,gemelo:1
+39,Core y gemelos,Crunch en polea,Cable Crunch,core,aislamiento,polea,externa,bilateral,2.5,10,20,0.15,0.6,1,abdomen:1
+40,Core y gemelos,Elevaciones de piernas colgado,Hanging Leg Raises,core,aislamiento,peso_corporal,corporal,bilateral,0,8,15,0.2,0.49,0,abdomen:1;antebrazo:0.2
+41,Core y gemelos,Rueda abdominal,Ab Wheel Rollout,core,aislamiento,otro,corporal,bilateral,0,6,12,0.2,0.53,0,abdomen:1;lumbar:0.3
+42,Core y gemelos,Plancha,Plank,core,aislamiento,peso_corporal,tiempo,bilateral,0,,,0.1,,0,abdomen:1

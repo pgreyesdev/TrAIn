@@ -1,0 +1,5 @@
+numpy>=1.26
+pandas>=2.2
+pyarrow>=15          # lectura/escritura Parquet
+psycopg[binary]>=3.1 # carga rápida en PostgreSQL (COPY)
+scikit-learn>=1.4    # solo para validar.py
