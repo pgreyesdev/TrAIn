@@ -61,7 +61,8 @@ train/
 ├── backend/                  # FastAPI (Sergio; endpoints del agente: Pablo)
 │   ├── .env.example          # DATABASE_URL, LLM_PROVIDER, ANTHROPIC_API_KEY, OPENAI_API_KEY, LLM_MODEL, MAX_MESSAGES_PER_DAY
 │   └── app/
-│       ├── main.py, db.py, schemas.py
+│       ├── main.py, db.py, schemas.py   # schemas.py = contrato de la API (T03)
+│       ├── mock.py           # servidor simulado del contrato
 │       ├── routers/          # usuarios, sesiones/series, recomendaciones, progreso, chat
 │       ├── ml/predictor.py   # carga modelos; usa ml/features.py y train_datos/simulador
 │       ├── agent/            # llm.py (Claude/OpenAI intercambiable), tools.py, prompts.py, knowledge/
@@ -98,13 +99,16 @@ train/
 
 ## Backend (FastAPI)
 
+Contrato de la API (T03): [`docs/api.md`](docs/api.md), modelos en `backend/app/schemas.py` y servidor simulado en `backend/app/mock.py`. JSON con campos en inglés `snake_case` y valores enumerados en español (los de la BD).
+
 Endpoints mínimos:
 - `POST /users`, `GET /users/{id}`
 - `POST /sessions` (sesión con cuestionario y series), `GET /users/{id}/sessions`
 - `GET /users/{id}/recommendations` → cambio de carga por ejercicio del día de rutina, estado del día, fatiga y una explicación corta; se guarda en `recomendacion`
 - `GET /users/{id}/progress?exercise_id=...` (desde `rendimiento_ejercicio`)
 - `POST /chat` → `{user_id, message, history}` → respuesta del agente
-- `GET /catalog/exercises`
+- `GET /catalog/exercises`, `GET /catalog/muscle-groups`
+- `GET /users/{id}/program` (rutina activa y día que toca), `GET /health`
 - Documentación automática en `/docs`. Usuario de demo fijo (sin login) en el MVP.
 
 ## Agente conversacional (Pablo)
