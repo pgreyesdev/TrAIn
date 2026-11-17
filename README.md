@@ -58,6 +58,15 @@ python generar.py --usuarios 1000
 python validar.py
 ```
 
+Contrato de la API (T03, detalles en [`docs/api.md`](docs/api.md)). Servidor simulado para desarrollar la app antes del backend real, y pruebas del contrato:
+
+```bash
+cd backend
+pip install -r requirements-dev.txt
+uvicorn app.mock:app --reload --port 8000   # http://localhost:8000/docs
+pytest
+```
+
 Cada fase añade aquí sus instrucciones (PostgreSQL en Docker en T08, backend en T13, app en T16).
 
 ## Gestión del proyecto

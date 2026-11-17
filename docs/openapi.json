@@ -1,0 +1,2609 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TrAIn API",
+    "summary": "Contrato entre la app Android y el backend de TrAIn (T03).",
+    "description": "Servidor simulado: datos en memoria y recomendaciones fijas. Ver docs/api.md.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/exercises": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "List Exercises",
+        "operationId": "list_exercises_catalog_exercises_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Exercise"
+                  },
+                  "type": "array",
+                  "title": "Response List Exercises Catalog Exercises Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/muscle-groups": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "List Muscle Groups",
+        "operationId": "list_muscle_groups_catalog_muscle_groups_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MuscleGroup"
+                  },
+                  "type": "array",
+                  "title": "Response List Muscle Groups Catalog Muscle Groups Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create User",
+        "operationId": "create_user_users_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get User",
+        "operationId": "get_user_users__user_id__get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/program": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get Program",
+        "operationId": "get_program_users__user_id__program_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Program"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "sessions"
+        ],
+        "summary": "Create Session",
+        "operationId": "create_session_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/sessions": {
+      "get": {
+        "tags": [
+          "sessions"
+        ],
+        "summary": "List Sessions",
+        "operationId": "list_sessions_users__user_id__sessions_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  },
+                  "title": "Response List Sessions Users  User Id  Sessions Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/recommendations": {
+      "get": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Get Recommendations",
+        "operationId": "get_recommendations_users__user_id__recommendations_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Default: today",
+              "title": "Date"
+            },
+            "description": "Default: today"
+          },
+          {
+            "name": "program_day",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 7,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Default: program next_day",
+              "title": "Program Day"
+            },
+            "description": "Default: program next_day"
+          },
+          {
+            "name": "sleep",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 3,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sleep"
+            }
+          },
+          {
+            "name": "body",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 3,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Body"
+            }
+          },
+          {
+            "name": "energy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 3,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Energy"
+            }
+          },
+          {
+            "name": "extra_activity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Extra Activity"
+            }
+          },
+          {
+            "name": "pain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pain"
+            }
+          },
+          {
+            "name": "pain_zone_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pain Zone Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recommendation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/progress": {
+      "get": {
+        "tags": [
+          "progress"
+        ],
+        "summary": "Get Progress",
+        "operationId": "get_progress_users__user_id__progress_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "exercise_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Exercise Id"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Progress"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "Chat",
+        "operationId": "chat_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/ChatRole"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Content"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "ChatMessage"
+      },
+      "ChatRequest": {
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "examples": [
+              1
+            ]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Message",
+            "examples": [
+              "¿Por qué me bajas el press banca?"
+            ]
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "History",
+            "description": "Previous turns, oldest first"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "message"
+        ],
+        "title": "ChatRequest"
+      },
+      "ChatResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ChatStatus"
+          },
+          "reply": {
+            "type": "string",
+            "title": "Reply",
+            "description": "Always a Spanish text the app can show as is"
+          },
+          "tools_used": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tools Used",
+            "examples": [
+              [
+                "get_recommendation"
+              ]
+            ]
+          },
+          "messages_left_today": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Messages Left Today",
+            "examples": [
+              29
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "reply",
+          "messages_left_today"
+        ],
+        "title": "ChatResponse"
+      },
+      "ChatRole": {
+        "type": "string",
+        "enum": [
+          "user",
+          "assistant"
+        ],
+        "title": "ChatRole"
+      },
+      "ChatStatus": {
+        "type": "string",
+        "enum": [
+          "ok",
+          "no_api_key",
+          "limit_reached",
+          "error"
+        ],
+        "title": "ChatStatus"
+      },
+      "DayStatus": {
+        "type": "string",
+        "enum": [
+          "entrenar",
+          "suave",
+          "descansar"
+        ],
+        "title": "DayStatus"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "examples": [
+              "Usuario 999 no encontrado"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorResponse",
+        "description": "Body of every 4xx/5xx error except 422 (FastAPI validation format)."
+      },
+      "Exercise": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              1
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Spanish name (nombre_es)",
+            "examples": [
+              "Press banca con barra"
+            ]
+          },
+          "name_en": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name En",
+            "examples": [
+              "Barbell Bench Press"
+            ]
+          },
+          "muscle_group": {
+            "$ref": "#/components/schemas/MuscleGroup"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "examples": [
+              "empuje_horizontal"
+            ]
+          },
+          "mechanics": {
+            "$ref": "#/components/schemas/Mechanics"
+          },
+          "equipment": {
+            "type": "string",
+            "title": "Equipment",
+            "examples": [
+              "barra"
+            ]
+          },
+          "load_type": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "increment_kg": {
+            "type": "number",
+            "title": "Increment Kg",
+            "examples": [
+              2.5
+            ]
+          },
+          "reps_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps Min",
+            "examples": [
+              3
+            ]
+          },
+          "reps_max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps Max",
+            "examples": [
+              10
+            ]
+          },
+          "lower_body": {
+            "type": "boolean",
+            "title": "Lower Body",
+            "description": "Uses the lower-body safety cap (+5 kg)"
+          },
+          "in_load_model": {
+            "type": "boolean",
+            "title": "In Load Model",
+            "description": "The AI engine suggests loads for it"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "name_en",
+          "muscle_group",
+          "pattern",
+          "mechanics",
+          "equipment",
+          "load_type",
+          "laterality",
+          "increment_kg",
+          "reps_min",
+          "reps_max",
+          "lower_body",
+          "in_load_model"
+        ],
+        "title": "Exercise"
+      },
+      "Goal": {
+        "type": "string",
+        "enum": [
+          "fuerza",
+          "hipertrofia",
+          "mantenimiento",
+          "perdida_grasa"
+        ],
+        "title": "Goal"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "examples": [
+              "ok"
+            ]
+          },
+          "api_version": {
+            "type": "string",
+            "title": "Api Version",
+            "examples": [
+              "1.0.0"
+            ]
+          },
+          "database": {
+            "type": "boolean",
+            "title": "Database",
+            "description": "PostgreSQL reachable"
+          },
+          "models_loaded": {
+            "type": "boolean",
+            "title": "Models Loaded",
+            "description": "AI engine artifacts loaded"
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version",
+            "examples": [
+              "2026.12.01-xgb"
+            ]
+          },
+          "llm_configured": {
+            "type": "boolean",
+            "title": "Llm Configured",
+            "description": "An LLM API key is configured"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "api_version",
+          "database",
+          "models_loaded",
+          "model_version",
+          "llm_configured"
+        ],
+        "title": "Health"
+      },
+      "Laterality": {
+        "type": "string",
+        "enum": [
+          "bilateral",
+          "unilateral"
+        ],
+        "title": "Laterality"
+      },
+      "Level": {
+        "type": "string",
+        "enum": [
+          "principiante",
+          "intermedio",
+          "avanzado"
+        ],
+        "title": "Level"
+      },
+      "LoadRecommendation": {
+        "properties": {
+          "exercise_id": {
+            "type": "integer",
+            "title": "Exercise Id",
+            "examples": [
+              1
+            ]
+          },
+          "exercise_name": {
+            "type": "string",
+            "title": "Exercise Name",
+            "examples": [
+              "Press banca con barra"
+            ]
+          },
+          "load_type": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "target_sets": {
+            "type": "integer",
+            "title": "Target Sets",
+            "examples": [
+              3
+            ]
+          },
+          "target_reps": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Reps",
+            "examples": [
+              8
+            ]
+          },
+          "target_rpe": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Rpe",
+            "examples": [
+              8.0
+            ]
+          },
+          "last_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Date",
+            "description": "Last session with this exercise"
+          },
+          "last_load_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Load Kg",
+            "description": "Last top working load, in the field the user logs",
+            "examples": [
+              80.0
+            ]
+          },
+          "change_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Kg",
+            "description": "Predicted change of the effective load, rounded to the increment",
+            "examples": [
+              2.5
+            ]
+          },
+          "suggested_load_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Load Kg",
+            "description": "Value to log next: load_kg, added_kg or assistance_kg",
+            "examples": [
+              82.5
+            ]
+          },
+          "capped": {
+            "type": "boolean",
+            "title": "Capped",
+            "description": "tope_seguridad lowered the prediction"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "exercise_id",
+          "exercise_name",
+          "load_type",
+          "target_sets",
+          "target_reps",
+          "target_rpe",
+          "last_date",
+          "last_load_kg",
+          "change_kg",
+          "suggested_load_kg",
+          "capped"
+        ],
+        "title": "LoadRecommendation"
+      },
+      "LoadType": {
+        "type": "string",
+        "enum": [
+          "externa",
+          "corporal",
+          "corporal_lastre",
+          "asistida",
+          "tiempo",
+          "transporte"
+        ],
+        "title": "LoadType"
+      },
+      "Mechanics": {
+        "type": "string",
+        "enum": [
+          "compuesto",
+          "aislamiento"
+        ],
+        "title": "Mechanics"
+      },
+      "MuscleGroup": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "Pecho"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "MuscleGroup"
+      },
+      "Program": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              101
+            ]
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "split": {
+            "$ref": "#/components/schemas/Split"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/ProgramDay"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "next_day": {
+            "type": "integer",
+            "maximum": 7.0,
+            "minimum": 1.0,
+            "title": "Next Day",
+            "description": "Routine day due today: the one after the last session's day, cyclic"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "split",
+          "start_date",
+          "days",
+          "next_day"
+        ],
+        "title": "Program"
+      },
+      "ProgramDay": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "maximum": 7.0,
+            "minimum": 1.0,
+            "title": "Day",
+            "examples": [
+              1
+            ]
+          },
+          "exercises": {
+            "items": {
+              "$ref": "#/components/schemas/ProgramExercise"
+            },
+            "type": "array",
+            "title": "Exercises"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "day",
+          "exercises"
+        ],
+        "title": "ProgramDay"
+      },
+      "ProgramExercise": {
+        "properties": {
+          "order": {
+            "type": "integer",
+            "title": "Order",
+            "examples": [
+              1
+            ]
+          },
+          "exercise_id": {
+            "type": "integer",
+            "title": "Exercise Id",
+            "examples": [
+              1
+            ]
+          },
+          "exercise_name": {
+            "type": "string",
+            "title": "Exercise Name",
+            "examples": [
+              "Press banca con barra"
+            ]
+          },
+          "load_type": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "target_sets": {
+            "type": "integer",
+            "title": "Target Sets",
+            "examples": [
+              3
+            ]
+          },
+          "target_reps": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Reps",
+            "description": "Seconds when load_type is 'tiempo'",
+            "examples": [
+              8
+            ]
+          },
+          "target_rpe": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Rpe",
+            "examples": [
+              8.0
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "order",
+          "exercise_id",
+          "exercise_name",
+          "load_type",
+          "target_sets",
+          "target_reps",
+          "target_rpe"
+        ],
+        "title": "ProgramExercise"
+      },
+      "Progress": {
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "exercise_id": {
+            "type": "integer",
+            "title": "Exercise Id"
+          },
+          "exercise_name": {
+            "type": "string",
+            "title": "Exercise Name"
+          },
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/ProgressPoint"
+            },
+            "type": "array",
+            "title": "Points",
+            "description": "Oldest first"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "exercise_id",
+          "exercise_name",
+          "points"
+        ],
+        "title": "Progress"
+      },
+      "ProgressPoint": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "session_id": {
+            "type": "integer",
+            "title": "Session Id"
+          },
+          "e1rm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "E1Rm",
+            "description": "Estimated 1RM (Epley + RIR), effective load"
+          },
+          "top_load_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top Load Kg",
+            "description": "carga_efectiva_top"
+          },
+          "top_reps": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top Reps"
+          },
+          "top_rpe": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top Rpe"
+          },
+          "volume_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume Kg"
+          },
+          "working_sets": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Working Sets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "date",
+          "session_id",
+          "e1rm",
+          "top_load_kg",
+          "top_reps",
+          "top_rpe",
+          "volume_kg",
+          "working_sets"
+        ],
+        "title": "ProgressPoint"
+      },
+      "Questionnaire": {
+        "properties": {
+          "sleep": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sleep",
+            "description": "1 mal, 2 normal, 3 bien"
+          },
+          "body": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Body",
+            "description": "1 fresco, 2 algo cargado, 3 muy cargado"
+          },
+          "energy": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Energy",
+            "description": "1 baja, 2 normal, 3 alta"
+          },
+          "extra_activity": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extra Activity",
+            "description": "Other sport yesterday: 0 no, 1 suave, 2 intenso"
+          },
+          "pain": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pain"
+          },
+          "pain_zone_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pain Zone Id",
+            "description": "muscle_group id; requires pain=true"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Questionnaire",
+        "description": "Short pre-workout questionnaire. Every answer is optional (null = not answered)."
+      },
+      "Recommendation": {
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "examples": [
+              1
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "examples": [
+              "2026-11-17"
+            ]
+          },
+          "program_day": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Day",
+            "examples": [
+              1
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/DayStatus"
+          },
+          "status_probabilities": {
+            "$ref": "#/components/schemas/StatusProbabilities"
+          },
+          "fatigue": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Fatigue",
+            "examples": [
+              42.0
+            ]
+          },
+          "loads": {
+            "items": {
+              "$ref": "#/components/schemas/LoadRecommendation"
+            },
+            "type": "array",
+            "title": "Loads"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 500,
+            "title": "Explanation",
+            "examples": [
+              "Has dormido bien y tu fatiga es moderada: puedes entrenar con normalidad."
+            ]
+          },
+          "questionnaire_used": {
+            "type": "boolean",
+            "title": "Questionnaire Used"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "examples": [
+              "2026.12.01-xgb"
+            ]
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "date",
+          "program_day",
+          "status",
+          "status_probabilities",
+          "fatigue",
+          "loads",
+          "explanation",
+          "questionnaire_used",
+          "model_version",
+          "generated_at"
+        ],
+        "title": "Recommendation"
+      },
+      "Session": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              10001
+            ]
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "program_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id"
+          },
+          "program_day": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Day"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "start_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time"
+          },
+          "duration_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Min"
+          },
+          "questionnaire": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Questionnaire"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session_hardness": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Hardness"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "sets": {
+            "items": {
+              "$ref": "#/components/schemas/SetOut"
+            },
+            "type": "array",
+            "title": "Sets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "program_id",
+          "program_day",
+          "date",
+          "start_time",
+          "duration_min",
+          "questionnaire",
+          "session_hardness",
+          "notes",
+          "sets"
+        ],
+        "title": "Session"
+      },
+      "SessionCreate": {
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "examples": [
+              1
+            ]
+          },
+          "program_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id",
+            "examples": [
+              101
+            ]
+          },
+          "program_day": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 7.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Day",
+            "examples": [
+              1
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "examples": [
+              "2026-11-17"
+            ]
+          },
+          "start_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time",
+            "examples": [
+              "18:30:00"
+            ]
+          },
+          "duration_min": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Min",
+            "examples": [
+              65
+            ]
+          },
+          "questionnaire": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Questionnaire"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "session_hardness": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Hardness",
+            "description": "1 fácil, 2 moderada, 3 dura, 4 al límite"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "sets": {
+            "items": {
+              "$ref": "#/components/schemas/SetIn"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Sets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user_id",
+          "date",
+          "sets"
+        ],
+        "title": "SessionCreate"
+      },
+      "SetIn": {
+        "properties": {
+          "exercise_id": {
+            "type": "integer",
+            "title": "Exercise Id",
+            "examples": [
+              1
+            ]
+          },
+          "exercise_order": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Exercise Order",
+            "description": "Position of the exercise in the session",
+            "examples": [
+              1
+            ]
+          },
+          "set_number": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Set Number",
+            "examples": [
+              1
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/SetType",
+            "default": "efectiva"
+          },
+          "target_reps": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Reps"
+          },
+          "reps": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps",
+            "examples": [
+              8
+            ]
+          },
+          "load_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load Kg",
+            "description": "'externa' exercises",
+            "examples": [
+              80.0
+            ]
+          },
+          "added_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Added Kg",
+            "description": "Extra weight, 'corporal_lastre'"
+          },
+          "assistance_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assistance Kg",
+            "description": "'asistida' exercises"
+          },
+          "duration_s": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration S",
+            "description": "'tiempo' exercises"
+          },
+          "distance_m": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance M"
+          },
+          "rpe": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rpe",
+            "description": "6-10, steps of 0.5",
+            "examples": [
+              8.0
+            ]
+          },
+          "completed": {
+            "type": "boolean",
+            "title": "Completed",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "exercise_id",
+          "exercise_order",
+          "set_number"
+        ],
+        "title": "SetIn"
+      },
+      "SetOut": {
+        "properties": {
+          "exercise_id": {
+            "type": "integer",
+            "title": "Exercise Id",
+            "examples": [
+              1
+            ]
+          },
+          "exercise_order": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Exercise Order",
+            "description": "Position of the exercise in the session",
+            "examples": [
+              1
+            ]
+          },
+          "set_number": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Set Number",
+            "examples": [
+              1
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/SetType",
+            "default": "efectiva"
+          },
+          "target_reps": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Reps"
+          },
+          "reps": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps",
+            "examples": [
+              8
+            ]
+          },
+          "load_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load Kg",
+            "description": "'externa' exercises",
+            "examples": [
+              80.0
+            ]
+          },
+          "added_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Added Kg",
+            "description": "Extra weight, 'corporal_lastre'"
+          },
+          "assistance_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assistance Kg",
+            "description": "'asistida' exercises"
+          },
+          "duration_s": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration S",
+            "description": "'tiempo' exercises"
+          },
+          "distance_m": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance M"
+          },
+          "rpe": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rpe",
+            "description": "6-10, steps of 0.5",
+            "examples": [
+              8.0
+            ]
+          },
+          "completed": {
+            "type": "boolean",
+            "title": "Completed",
+            "default": true
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              100000101
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "exercise_id",
+          "exercise_order",
+          "set_number",
+          "id"
+        ],
+        "title": "SetOut"
+      },
+      "SetType": {
+        "type": "string",
+        "enum": [
+          "calentamiento",
+          "efectiva",
+          "descendente",
+          "fallo"
+        ],
+        "title": "SetType"
+      },
+      "Sex": {
+        "type": "string",
+        "enum": [
+          "H",
+          "M",
+          "otro"
+        ],
+        "title": "Sex"
+      },
+      "Split": {
+        "type": "string",
+        "enum": [
+          "full_body",
+          "torso_pierna",
+          "ppl",
+          "weider",
+          "otro"
+        ],
+        "title": "Split"
+      },
+      "StatusProbabilities": {
+        "properties": {
+          "entrenar": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Entrenar"
+          },
+          "suave": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Suave"
+          },
+          "descansar": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Descansar"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "entrenar",
+          "suave",
+          "descansar"
+        ],
+        "title": "StatusProbabilities"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [
+              1
+            ]
+          },
+          "sex": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "birth_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Birth Date"
+          },
+          "height_cm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height Cm"
+          },
+          "weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight Kg",
+            "description": "Latest body measurement"
+          },
+          "level": {
+            "$ref": "#/components/schemas/Level"
+          },
+          "goal": {
+            "$ref": "#/components/schemas/Goal"
+          },
+          "days_per_week": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Per Week"
+          },
+          "signup_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Signup Date"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic",
+            "description": "Created by the simulator"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "sex",
+          "birth_date",
+          "height_cm",
+          "weight_kg",
+          "level",
+          "goal",
+          "days_per_week",
+          "signup_date",
+          "synthetic"
+        ],
+        "title": "User"
+      },
+      "UserCreate": {
+        "properties": {
+          "sex": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "birth_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Birth Date",
+            "examples": [
+              "1999-04-12"
+            ]
+          },
+          "height_cm": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 250.0,
+                "minimum": 100.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height Cm",
+            "examples": [
+              178
+            ]
+          },
+          "weight_kg": {
+            "type": "number",
+            "maximum": 300.0,
+            "minimum": 30.0,
+            "title": "Weight Kg",
+            "description": "Stored in medida_corporal",
+            "examples": [
+              76.5
+            ]
+          },
+          "level": {
+            "$ref": "#/components/schemas/Level"
+          },
+          "goal": {
+            "$ref": "#/components/schemas/Goal"
+          },
+          "days_per_week": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 2.0,
+            "title": "Days Per Week",
+            "description": "2-6: the backend builds the program with programas.py",
+            "examples": [
+              4
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "weight_kg",
+          "level",
+          "goal",
+          "days_per_week"
+        ],
+        "title": "UserCreate"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "system",
+      "description": "Estado del servicio"
+    },
+    {
+      "name": "catalog",
+      "description": "Catálogo de ejercicios (capa 1)"
+    },
+    {
+      "name": "users",
+      "description": "Usuarios y rutina (capa 2)"
+    },
+    {
+      "name": "sessions",
+      "description": "Registro de sesiones y series (capa 2)"
+    },
+    {
+      "name": "recommendations",
+      "description": "Motor de IA: cargas, estado y fatiga"
+    },
+    {
+      "name": "progress",
+      "description": "Evolución por ejercicio (capa 3)"
+    },
+    {
+      "name": "chat",
+      "description": "Agente conversacional"
+    }
+  ]
+}
