@@ -121,9 +121,14 @@ Resultado con 2.000 usuarios (prueba sobre usuarios **no vistos**):
 
 | Modelo | Línea base | Fórmula e1RM | Modelo sencillo |
 | --- | --- | --- | --- |
-| Cargas, MAE del cambio | 1,81 kg (repetir) | 1,13 kg | **0,73 kg** (−60 %) |
-| Estado, F1 macro | 0,27 (mayoritaria) | — | **0,63** · 0,72 con cuestionario |
-| Fatiga 0-100, MAE | 9,9 (media) | — | **5,5** |
+| Cargas, MAE del cambio | 1,83 kg (repetir) | 1,14 kg | **0,75 kg** (−59 %) |
+| Estado, F1 macro | 0,27 (mayoritaria) | — | **0,60** · 0,70 con cuestionario |
+| Fatiga 0-100, MAE | 10,0 (media) | — | **5,4** |
+
+Medido tras `fixed T04` (`MAX_DIAS_SEGUIDOS = 6`) y `fixed T05` (semilla por usuario).
+El F1 de estado baja de 0,63 a 0,60 porque con 5 días la regla generaba
+descansos triviales (se deducían de `sesiones_consecutivas`); ahora el descanso
+depende sobre todo de la fatiga y el sueño.
 
 `validar.py` usa pocas variables y modelos sin ajustar: es un punto de partida, no
 el Motor de IA.
@@ -144,7 +149,7 @@ Cada día:
 1. Se recupera la fatiga muscular (τ ≈ 1,8 días) y la global (τ ≈ 4,5 días).
 2. Se genera el sueño de la noche anterior.
 3. Se calcula la disposición real y la etiqueta del día:
-   - descansar si hay lesión, si lleva 5 o más días seguidos entrenando, o si la disposición está por debajo de 47;
+   - descansar si hay lesión, si lleva 6 o más días seguidos entrenando, o si la disposición está por debajo de 47;
    - entrenar suave si está entre 47 y 58;
    - entrenar si está en 58 o más.
 4. Si le toca y acude (según su adherencia), entrena su rutina:
@@ -159,7 +164,7 @@ objetivo al RPE objetivo. Se redondea al incremento del ejercicio y se limita co
 la regla de seguridad (+5 % como máximo, hasta +2,5 kg en tren superior y +5 kg
 en inferior). El objetivo del modelo es `cambio_kg` respecto a la carga anterior.
 
-Distribución de `cambio_kg`: 32 % sube, 39 % igual y 29 % baja.
+Distribución de `cambio_kg`: 31 % sube, 38 % igual y 30 % baja.
 
 Los parámetros están al principio de `simulador/motor.py` (tasas de mejora,
 umbrales, pesos de la fatiga…). Si los cambiáis, volved a pasar `validar.py`.

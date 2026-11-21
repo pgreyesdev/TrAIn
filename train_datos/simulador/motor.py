@@ -67,7 +67,7 @@ PESO_SUENO = 5.0             # puntos de disposición por desviación de sueño
 PESO_MUSCULO = 0.8           # puntos por unidad de fatiga muscular máxima
 UMBRAL_ENTRENAR = 58.0
 UMBRAL_SUAVE = 47.0
-MAX_DIAS_SEGUIDOS = 5
+MAX_DIAS_SEGUIDOS = 6        # descansar tras 6 días seguidos (≥ 1 día libre por semana; admite la PPL de 6 días)
 UMBRAL_CUERPO = (4.0, 9.0)   # fatiga muscular máxima: fresco < 4 <= algo cargado < 9 <= muy cargado
 ESTILOS = ["progresivo", "conservador", "agresivo", "repetidor"]
 P_ESTILOS = [0.40, 0.25, 0.15, 0.20]

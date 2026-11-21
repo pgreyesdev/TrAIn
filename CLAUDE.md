@@ -72,7 +72,7 @@ train/
 
 ## Pendiente en datos (T07–T08, Sergio)
 
-- La regla `MAX_DIAS_SEGUIDOS = 5` choca con la rutina de 6 días (PPL): subirla a 6 o justificarla en la memoria.
+- ~~La regla `MAX_DIAS_SEGUIDOS = 5` choca con la rutina de 6 días (PPL)~~: hecho (`fixed T04`), ahora es 6 para todos.
 - ~~Fijar la semilla por usuario~~: hecho (`fixed T05`). Cada usuario se siembra con `(semilla, id)`.
 - Generar el dataset de entrenamiento: `python generar.py --usuarios 10000`.
 - PostgreSQL en Docker y BD de demo con `--lotes 1` (200 usuarios; unos 0,85 GB por cada 1.000 usuarios).
@@ -90,9 +90,9 @@ train/
 
 | Modelo | Línea base | Referencia (validar.py) | Objetivo |
 | --- | --- | --- | --- |
-| Cambio de carga, MAE | 1,76 kg (repetir) | 0,70 kg | ≤ 1 kg y ≥ 40 % mejor que la línea base |
-| Estado, F1 macro | 0,25 (mayoritaria) | 0,65 · 0,73 con cuestionario | ≥ 0,65 · ≥ 0,70 con cuestionario |
-| Fatiga, MAE | 10,4 (media) | 5,6 | ≤ 6 |
+| Cambio de carga, MAE | 1,83 kg (repetir) | 0,75 kg | ≤ 1 kg y ≥ 40 % mejor que la línea base |
+| Estado, F1 macro | 0,27 (mayoritaria) | 0,60 · 0,70 con cuestionario | ≥ 0,65 · ≥ 0,70 con cuestionario |
+| Fatiga, MAE | 10,0 (media) | 5,4 | ≤ 6 |
 
 - Predicción en menos de 1 s por consulta.
 - En la memoria hay que explicar que las métricas miden cuánto aprende el modelo las reglas del simulador, no la realidad.

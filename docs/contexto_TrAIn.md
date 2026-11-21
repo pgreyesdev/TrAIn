@@ -150,7 +150,7 @@ Otras decisiones:
 
 ## 9. Pendientes detectados en la revisión de `train_datos`
 
-1. **Regla de 5 días seguidos vs. rutina de 6 días (PPL):** el sábado planificado se etiqueta "descansar" si se entrenó de lunes a viernes; el 29 % de los descansos de esos usuarios salen de la regla. Opciones: `MAX_DIAS_SEGUIDOS = 6` o justificarlo en la memoria. (T07)
+1. ~~**Regla de 5 días seguidos vs. rutina de 6 días (PPL)**~~ Resuelto (`fixed T04`): `MAX_DIAS_SEGUIDOS = 6`, global (al menos un día libre por semana). El F1 de referencia del estado baja de 0,63 a 0,60 al desaparecer los descansos triviales.
 2. ~~**Semilla por lote:** los datos cambian si cambia `--lote`.~~ Resuelto (`fixed T05`): cada usuario tiene su generador, sembrado con `(semilla, id)`.
 3. **Ids app vs. simulador:** tras reajustar secuencias, la app crea ids dentro del patrón simulado (p. ej. sesión 4.000.097). Cargar todos los datos sintéticos antes de usar la app. (T08)
 4. **Tamaño de la BD:** ~0,85 GB por cada 1.000 usuarios en PostgreSQL (Parquet: ~70 MB). BD de demo con `--lotes 1` (200 usuarios). (T08)
