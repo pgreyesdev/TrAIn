@@ -7,6 +7,10 @@ Ejemplos:
 
 Cada lote de usuarios se simula y se escribe por separado, así que la memoria
 no crece con el número de usuarios y se puede generar tanto como quepa en disco.
+
+Cada usuario tiene su propio generador aleatorio, sembrado con (--semilla, id):
+con la misma semilla, el usuario N sale siempre igual aunque cambien --lote,
+--procesos o --usuarios.
 """
 from __future__ import annotations
 
@@ -28,13 +32,15 @@ from simulador.salida import Escritor, a_dataframes
 
 def procesar_lote(n_lote: int, uid_desde: int, uid_hasta: int, n_dias: int, semilla: int,
                   base: str, formato: str, fin_datos: int) -> dict:
-    rng = random.Random(semilla * 1_000_003 + n_lote)
     ejercicios = catalogo.cargar()
     cat = catalogo.tablas_capa1()
     fecha_min = date(2023, 1, 1).toordinal()
     fecha_max = fin_datos - n_dias
     out = nueva_salida()
     for uid in range(uid_desde, uid_hasta):
+        # Un generador por usuario: sus datos dependen solo de (semilla, uid), no del
+        # tamaño del lote, del número de procesos ni de lo que consuman otros usuarios.
+        rng = random.Random(f"{semilla}-{uid}")
         simular_usuario(uid, rng, ejercicios, fecha_min, fecha_max, n_dias, out)
     dfs = a_dataframes(out)
 
@@ -56,7 +62,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--usuarios", type=int, default=1000)
     ap.add_argument("--meses", type=float, default=12, help="historial por usuario")
-    ap.add_argument("--semilla", type=int, default=42)
+    ap.add_argument("--semilla", type=int, default=42,
+                    help="misma semilla = mismos datos por usuario")
     ap.add_argument("--procesos", type=int, default=os.cpu_count() or 1)
     ap.add_argument("--lote", type=int, default=200, help="usuarios por fichero")
     ap.add_argument("--salida", default="datos")

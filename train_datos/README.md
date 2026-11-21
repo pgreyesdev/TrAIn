@@ -47,7 +47,7 @@ python generar.py --usuarios 50000 --meses 18 --salida datos_grande
 | `--meses` | 12 | historial por usuario |
 | `--procesos` | núcleos del PC | simulación en paralelo |
 | `--lote` | 200 | usuarios por fichero |
-| `--semilla` | 42 | misma semilla = mismos datos |
+| `--semilla` | 42 | misma semilla = mismos datos para cada usuario, sea cual sea `--lote`, `--procesos` o `--usuarios` |
 | `--salida` | `datos` | carpeta de salida |
 
 **Magnitud de referencia** (medida con 2.000 usuarios × 12 meses): ~166 sesiones y

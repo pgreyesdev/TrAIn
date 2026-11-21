@@ -73,7 +73,7 @@ train/
 ## Pendiente en datos (T07–T08, Sergio)
 
 - La regla `MAX_DIAS_SEGUIDOS = 5` choca con la rutina de 6 días (PPL): subirla a 6 o justificarla en la memoria.
-- Fijar la semilla por usuario (ahora depende de `--lote`).
+- ~~Fijar la semilla por usuario~~: hecho (`fixed T05`). Cada usuario se siembra con `(semilla, id)`.
 - Generar el dataset de entrenamiento: `python generar.py --usuarios 10000`.
 - PostgreSQL en Docker y BD de demo con `--lotes 1` (200 usuarios; unos 0,85 GB por cada 1.000 usuarios).
 - Cargar todos los datos sintéticos **antes** de que la app inserte datos: los ids nuevos siguen el mismo patrón que los simulados.
