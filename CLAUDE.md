@@ -74,10 +74,13 @@ train/
 
 - ~~La regla `MAX_DIAS_SEGUIDOS = 5` choca con la rutina de 6 días (PPL)~~: hecho (`fixed T04`), ahora es 6 para todos.
 - ~~Fijar la semilla por usuario~~: hecho (`fixed T05`). Cada usuario se siembra con `(semilla, id)`.
-- Generar el dataset de entrenamiento: `python generar.py --usuarios 10000`.
+- ~~Generar el dataset de entrenamiento~~: hecho y validado (T07, ver `docs/T07_ajustes_simulador_y_dataset.md`). Se regenera idéntico (en Linux) con `python generar.py --usuarios 10000` (no se sube).
 - PostgreSQL en Docker y BD de demo con `--lotes 1` (200 usuarios; unos 0,85 GB por cada 1.000 usuarios).
 - Cargar todos los datos sintéticos **antes** de que la app inserte datos: los ids nuevos siguen el mismo patrón que los simulados.
-- Tras cambiar parámetros del simulador, volver a ejecutar `validar.py`.
+- Tras cambiar parámetros del simulador, volver a ejecutar `validar.py` y las pruebas.
+- Probar Parquet y psycopg en Linux con `requirements-dev.txt` (cierra el punto 3 de la T07).
+
+Pruebas de `train_datos`: `cd train_datos && pytest tests` (la carga en PostgreSQL solo con `TRAIN_TEST_DSN` apuntando a una BD `*_test`).
 
 ## Motor de IA (Adrián)
 

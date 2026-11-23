@@ -156,8 +156,9 @@ Otras decisiones:
 4. **Tamaño de la BD:** ~0,85 GB por cada 1.000 usuarios en PostgreSQL (Parquet: ~70 MB). BD de demo con `--lotes 1` (200 usuarios). (T08)
 5. **La recomendación no tiene consecuencias en la simulación:** los usuarios entrenan igual los días etiquetados "descansar" (44 %). No se puede afirmar que seguir las recomendaciones mejore el progreso. Limitación para la memoria.
 6. **Circularidad:** las relaciones fuerza–fatiga–sueño son reglas inventadas; las métricas miden cuánto aprende el modelo esas reglas. Explicarlo en la memoria.
-7. Probar la escritura Parquet y la carga con psycopg en un equipo con acceso a PyPI.
+7. Probar la escritura Parquet y la carga con psycopg en un equipo con acceso a PyPI. En la T07: carga real probada con `psql` y pruebas automáticas en `train_datos/tests/`, que cubren Parquet y psycopg en cuanto están instalados.
 8. Tras cambiar parámetros del simulador, volver a pasar `validar.py`.
+9. Hallazgos de la T07 sin abordar (cargas extremas de usuarios "repetidor", RPE con 0 repeticiones, avisos de numpy en `salida.py`): ver `docs/T07_ajustes_simulador_y_dataset.md`, sección 6.
 
 ## 10. Criterios de éxito (revisados el 3/11)
 

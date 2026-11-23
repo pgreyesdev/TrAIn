@@ -17,7 +17,9 @@ train_datos/
 │   └── salida.py                  escritura/lectura de Parquet
 ├── generar.py                     genera los datos
 ├── cargar_postgres.py             vuelca capas 1-3 en PostgreSQL
-└── validar.py                     comprueba que los datos se pueden aprender
+├── validar.py                     comprueba que los datos se pueden aprender
+├── pytest.ini                     configuración de las pruebas
+└── tests/                         pruebas (pytest)
 ```
 
 ## 1. Instalación
@@ -49,9 +51,11 @@ python generar.py --usuarios 50000 --meses 18 --salida datos_grande
 | `--lote` | 200 | usuarios por fichero |
 | `--semilla` | 42 | misma semilla = mismos datos para cada usuario, sea cual sea `--lote`, `--procesos` o `--usuarios` |
 | `--salida` | `datos` | carpeta de salida |
+| `--formato` | `auto` | `parquet`, `csv` (CSV.gz) o `auto` (Parquet si hay pyarrow) |
+| `--fin` | `2026-10-01` | última fecha posible de los datos |
 
 **Magnitud de referencia** (medida con 2.000 usuarios × 12 meses): ~166 sesiones y
-~3.200 series por usuario; 0,15 s por usuario y núcleo; ~70 MB por cada 1.000 usuarios
+~3.200 series por usuario; 0,11–0,15 s por usuario y núcleo; ~70 MB por cada 1.000 usuarios
 en disco.
 
 | Usuarios | Series | Tiempo con 8 núcleos | Disco (aprox.) |
@@ -117,6 +121,9 @@ psycopg debería ir igual o más rápido, pero esa vía no la he podido probar a
 python validar.py --datos datos --max-usuarios 2000
 ```
 
+`validar.py` carga las tablas enteras: con 8 GB de RAM, no pases de `--max-usuarios 5000`
+(pico de 4,8 GB; con 10.000 no cabe en 7 GB).
+
 Resultado con 2.000 usuarios (prueba sobre usuarios **no vistos**):
 
 | Modelo | Línea base | Fórmula e1RM | Modelo sencillo |
@@ -133,7 +140,21 @@ depende sobre todo de la fatiga y el sueño.
 `validar.py` usa pocas variables y modelos sin ajustar: es un punto de partida, no
 el Motor de IA.
 
-## 6. Cómo funciona el simulador
+## 6. Pruebas
+
+```bash
+pip install -r requirements-dev.txt
+pytest tests -q -rs
+TRAIN_TEST_DSN=postgresql://usuario:clave@localhost:5432/train_test pytest tests -q -rs
+```
+
+Comprueban la reproducibilidad (misma semilla = mismos datos con cualquier `--lote` o
+`--procesos`), la regla de la etiqueta del día, la coherencia de los datos y la lectura y
+escritura en CSV y Parquet. La carga en PostgreSQL solo se prueba si existe
+`TRAIN_TEST_DSN`, que debe apuntar a una BD **desechable** (`--crear-esquema` borra las
+tablas); por seguridad se salta si el nombre de la BD no termina en `_test`. Detalles y resultados en [`docs/T07_ajustes_simulador_y_dataset.md`](../docs/T07_ajustes_simulador_y_dataset.md).
+
+## 7. Cómo funciona el simulador
 
 Cada usuario tiene un perfil (sexo, edad, peso, nivel, objetivo, días por semana)
 y unos rasgos ocultos:
@@ -169,7 +190,7 @@ Distribución de `cambio_kg`: 31 % sube, 38 % igual y 30 % baja.
 Los parámetros están al principio de `simulador/motor.py` (tasas de mejora,
 umbrales, pesos de la fatiga…). Si los cambiáis, volved a pasar `validar.py`.
 
-## 7. Convenciones de registro
+## 8. Convenciones de registro
 
 - **Cargas en kg.**
   - Mancuernas: el peso de **cada** mancuerna.
@@ -184,7 +205,7 @@ umbrales, pesos de la fatiga…). Si los cambiáis, volved a pasar `validar.py`.
   - serie = sesión × 100 + n;
   - programa = usuario × 100 + n.
 
-## 8. Decisiones tomadas
+## 9. Decisiones tomadas
 
 - RPE como medida principal.
 - El modelo de cargas predice el cambio respecto a la última carga.
@@ -192,7 +213,7 @@ umbrales, pesos de la fatiga…). Si los cambiáis, volved a pasar `validar.py`.
 - Cuestionario opcional con respuestas cortas.
 - PostgreSQL desde el inicio.
 
-## 9. Limitaciones conocidas
+## 10. Limitaciones conocidas
 
 - Las relaciones fuerza–fatiga–sueño son reglas inventadas y razonables, no medidas. El modelo aprenderá esas reglas.
 - La etiqueta "estado" depende del sueño real, que el usuario solo describe en tres niveles y solo los días que entrena. Por eso el F1 tiene un techo.

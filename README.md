@@ -56,6 +56,7 @@ Generar datos y validar (detalles en [`train_datos/README.md`](train_datos/READM
 cd train_datos
 python generar.py --usuarios 1000
 python validar.py
+pytest tests -q        # pruebas (antes: pip install -r requirements-dev.txt)
 ```
 
 Contrato de la API (T03, detalles en [`docs/api.md`](docs/api.md)). Servidor simulado para desarrollar la app antes del backend real, y pruebas del contrato:

@@ -58,10 +58,10 @@ def calcular_rendimiento(serie, sesion, medida, ejercicio) -> pd.DataFrame:
         usuario_id=("usuario_id", "first"), fecha=("fecha", "first"),
         volumen_kg=("vol", lambda x: x.sum(min_count=1)),
         series_efectivas=("id", "size"), reps_fallidas=("fallidas", "sum"))
-    # Desempate por id de serie (la primera que logra el top): sin él, con series
-    # empatadas en e1rm y reps, el resultado dependía del orden de las filas.
-    top = (s.sort_values(claves + ["e1rm", "reps", "id"],
-                         ascending=[True, True, False, False, True], na_position="last")
+    # Desempate por orden de la serie (orden_ejercicio, num_serie y, por último, id): gana
+    # la primera que logra el top. Con datos de la app el id es el orden de inserción.
+    top = (s.sort_values(claves + ["e1rm", "reps", "orden_ejercicio", "num_serie", "id"],
+                         ascending=[True, True, False, False, True, True, True], na_position="last")
            .drop_duplicates(claves)
            .set_index(claves)[["carga_efectiva", "reps", "rpe", "e1rm"]]
            .rename(columns={"carga_efectiva": "carga_efectiva_top", "reps": "reps_top",

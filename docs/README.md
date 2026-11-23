@@ -8,5 +8,6 @@
 | `api.md` | Contrato de la API app ↔ backend (T03) |
 | `openapi.json` | OpenAPI del contrato, generado con `python -m app.mock --export` |
 | `contexto_TrAIn.md` | Resumen del proyecto, decisiones fijadas, estado y pendientes |
+| `T07_ajustes_simulador_y_dataset.md` | T07: cambios del simulador y su motivo, dataset de 10.000 usuarios, métricas y pruebas de `train_datos` |
 
 Si cambia una decisión, una fecha o un criterio, actualiza `contexto_TrAIn.md`, `CLAUDE.md`, el acta del wiki y el tablero.
