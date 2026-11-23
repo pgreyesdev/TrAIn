@@ -6,6 +6,9 @@ entrenamiento del Motor de IA.
     python cargar_postgres.py --dsn postgresql://usuario:clave@localhost:5432/train --crear-esquema
     python cargar_postgres.py --dsn ... --lotes 5      # solo los 5 primeros lotes (~1.000 usuarios)
 
+Sin --crear-esquema, no carga nada si las tablas ya tienen datos (los ids chocarían):
+hay que cargar todos los datos sintéticos de una vez, antes de que la app inserte.
+
 Usa psycopg (COPY, lo más rápido). Si psycopg no está instalado, usa el
 cliente `psql` con \\copy.
 """
@@ -73,16 +76,28 @@ class Destino:
             except ImportError:
                 print("psycopg no está instalado: uso psql.")
 
-    def tipos(self, tabla: str) -> dict[str, str]:
-        sql = ("SELECT column_name, data_type FROM information_schema.columns "
-               f"WHERE table_schema = 'public' AND table_name = '{tabla}'")
+    def consultar(self, sql: str) -> list:
         if self.conn:
-            filas = self.conn.execute(sql).fetchall()
-        else:
-            salida = subprocess.run(["psql", self.dsn, "-Atq", "-F", "|", "-c", sql],
-                                    check=True, capture_output=True, text=True).stdout
-            filas = [linea.split("|") for linea in salida.splitlines() if linea]
-        return {c: t for c, t in filas}
+            return self.conn.execute(sql).fetchall()
+        salida = subprocess.run(["psql", self.dsn, "-Atq", "-F", "|", "-c", sql],
+                                check=True, capture_output=True, text=True).stdout
+        return [linea.split("|") for linea in salida.splitlines() if linea]
+
+    def tipos(self, tabla: str) -> dict[str, str]:
+        return {c: t for c, t in self.consultar(
+            "SELECT column_name, data_type FROM information_schema.columns "
+            f"WHERE table_schema = 'public' AND table_name = '{tabla}'")}
+
+    def existentes(self, tablas: list[str]) -> set[str]:
+        nombres = ", ".join(f"'{t}'" for t in tablas)
+        return {f[0] for f in self.consultar(
+            "SELECT table_name FROM information_schema.tables "
+            f"WHERE table_schema = 'public' AND table_name IN ({nombres})")}
+
+    def con_filas(self, tablas: list[str]) -> list[str]:
+        """Tablas que ya tienen alguna fila."""
+        partes = [f"SELECT '{t}' WHERE EXISTS (SELECT 1 FROM {t})" for t in tablas]
+        return [f[0] for f in self.consultar(" UNION ALL ".join(partes))]
 
     def ejecutar_fichero(self, ruta: Path):
         sql = ruta.read_text(encoding="utf-8")
@@ -132,6 +147,17 @@ def main():
                     + ", ".join(reversed(ORDEN)) + ", recomendacion CASCADE")
         db.ejecutar_fichero(RAIZ / "sql" / "schema_postgres.sql")
         print("Esquema creado.")
+    elif faltan := sorted(set(ORDEN) - db.existentes(ORDEN), key=ORDEN.index):
+        raise SystemExit(f"No existe el esquema de TrAIn (faltan: {', '.join(faltan)}): "
+                         "usa --crear-esquema.")
+    elif llenas := db.con_filas(ORDEN):
+        # Los ids sintéticos (sesión = usuario × 10.000 + n) chocarían con los ya cargados
+        # o con los que haya creado la app tras reajustar las secuencias.
+        raise SystemExit(
+            f"La BD ya tiene datos ({', '.join(llenas)}): no se ha cargado nada.\n"
+            "Cargar encima provocaría colisiones de ids con los datos ya cargados o creados "
+            "por la app.\nVuelve a crear las tablas con --crear-esquema (BORRA todos los datos) "
+            "y carga todos los datos sintéticos antes de que la app inserte.")
 
     t0 = time.time()
     for tabla in ORDEN:
@@ -147,7 +173,7 @@ def main():
         print(f"  {tabla:<24} {n:>12,} filas · {time.time() - t0:.0f} s".replace(",", "."))
 
     db.ejecutar_fichero(RAIZ / "sql" / "reajustar_secuencias.sql")
-    db.ejecutar("ANALYZE")
+    db.ejecutar("ANALYZE " + ", ".join(ORDEN))
     print("Carga terminada.")
 
 

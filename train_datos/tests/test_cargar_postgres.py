@@ -45,14 +45,15 @@ CON_SECUENCIA = ["grupo_muscular", "musculo", "patron_movimiento", "ejercicio", 
 
 
 def _consultar(sql: str) -> list[tuple[str, ...]]:
-    """Ejecuta una consulta y devuelve las filas como tuplas de texto."""
+    """Ejecuta una consulta y devuelve las filas como tuplas de texto (ninguna si no es SELECT)."""
     try:
         import psycopg
     except ImportError:
         psycopg = None
     if psycopg is not None:
         with psycopg.connect(DSN, autocommit=True) as conn:
-            return [tuple(str(v) for v in fila) for fila in conn.execute(sql).fetchall()]
+            cur = conn.execute(sql)
+            return [tuple(str(v) for v in fila) for fila in cur.fetchall()] if cur.description else []
     if shutil.which("psql") is None:
         pytest.skip("no hay psycopg ni psql para consultar la BD")
     salida = subprocess.run(["psql", DSN, "-Atq", "-F", "|", "-v", "ON_ERROR_STOP=1", "-c", sql],
@@ -119,3 +120,33 @@ def test_secuencias_reajustadas(tabla, cargado):
 def test_ids_cargados_iguales_que_en_los_ficheros(cargado):
     filas = _consultar("SELECT id FROM sesion ORDER BY id")
     assert [int(f[0]) for f in filas] == sorted(leer(cargado, "sesion")["id"].tolist())
+
+
+def test_recargar_sin_crear_esquema_se_bloquea(cargado):
+    """Cargar encima de una BD con datos, sin --crear-esquema, falla sin tocar nada
+    (los ids sintéticos chocarían con los ya cargados o con los creados por la app)."""
+    consulta = " UNION ALL ".join(f"SELECT '{t}', count(*) FROM {t}" for t in TABLAS_CARGADAS)
+    antes = _consultar(consulta)
+    res = subprocess.run([sys.executable, str(RAIZ / "cargar_postgres.py"), "--datos", str(cargado),
+                          "--dsn", DSN], cwd=RAIZ, capture_output=True, text=True, check=False)
+    assert res.returncode != 0
+    assert "ya tiene datos" in res.stderr and "--crear-esquema" in res.stderr, res.stderr
+    assert "Traceback" not in res.stderr
+    assert _consultar(consulta) == antes
+
+
+def test_cargar_sin_esquema_pide_crear_esquema(cargado):
+    """Sin las tablas de TrAIn y sin --crear-esquema, la carga falla con un mensaje claro.
+    Al terminar se vuelve a cargar con --crear-esquema para no dejar la BD sin esquema."""
+    orden = [sys.executable, str(RAIZ / "cargar_postgres.py"), "--datos", str(cargado), "--dsn", DSN]
+    try:
+        _consultar("DROP TABLE IF EXISTS " + ", ".join(reversed(TABLAS_CARGADAS))
+                   + ", recomendacion CASCADE")
+        res = subprocess.run(orden, cwd=RAIZ, capture_output=True, text=True, check=False)
+        assert res.returncode != 0
+        assert "No existe el esquema de TrAIn" in res.stderr, res.stderr
+        assert "--crear-esquema" in res.stderr and "Traceback" not in res.stderr, res.stderr
+    finally:
+        rec = subprocess.run([*orden, "--crear-esquema"], cwd=RAIZ, capture_output=True,
+                             text=True, check=False)
+        assert rec.returncode == 0, f"no se pudo recrear la BD:\n{rec.stdout}\n{rec.stderr}"

@@ -68,7 +68,16 @@ uvicorn app.mock:app --reload --port 8000   # http://localhost:8000/docs
 pytest
 ```
 
-Cada fase añade aquí sus instrucciones (PostgreSQL en Docker en T08, backend en T13, app en T16).
+Base de datos (T08, detalles en [`docs/T08_postgres_docker_bd_demo.md`](docs/T08_postgres_docker_bd_demo.md)). Cada miembro levanta su propia BD local con Docker (en Windows, desde Git Bash o WSL):
+
+```bash
+docker compose up -d --wait db     # PostgreSQL 16 en localhost:5432, BD train (y train_test para pruebas)
+bash scripts/crear_bd_demo.sh      # BD de demo: 200 usuarios (BORRA las tablas; pide confirmación)
+```
+
+DSN: `postgresql://train:train@localhost:5432/train`. Los datos sintéticos se cargan siempre de una vez, antes de que la app inserte nada.
+
+Cada fase añade aquí sus instrucciones (backend en T13, app en T16).
 
 ## Gestión del proyecto
 

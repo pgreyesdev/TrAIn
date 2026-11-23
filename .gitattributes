@@ -1,0 +1,4 @@
+# Fin de línea LF en scripts y ficheros de Docker (deben funcionar en Linux
+# aunque se haga checkout en Windows con core.autocrlf).
+*.sh        text eol=lf
+docker/**   text eol=lf

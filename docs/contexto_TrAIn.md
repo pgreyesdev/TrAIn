@@ -152,11 +152,11 @@ Otras decisiones:
 
 1. ~~**Regla de 5 días seguidos vs. rutina de 6 días (PPL)**~~ Resuelto (`fixed T04`): `MAX_DIAS_SEGUIDOS = 6`, global (al menos un día libre por semana). El F1 de referencia del estado baja de 0,63 a 0,60 al desaparecer los descansos triviales.
 2. ~~**Semilla por lote:** los datos cambian si cambia `--lote`.~~ Resuelto (`fixed T05`): cada usuario tiene su generador, sembrado con `(semilla, id)`.
-3. **Ids app vs. simulador:** tras reajustar secuencias, la app crea ids dentro del patrón simulado (p. ej. sesión 4.000.097). Cargar todos los datos sintéticos antes de usar la app. (T08)
-4. **Tamaño de la BD:** ~0,85 GB por cada 1.000 usuarios en PostgreSQL (Parquet: ~70 MB). BD de demo con `--lotes 1` (200 usuarios). (T08)
+3. **Ids app vs. simulador:** tras reajustar secuencias, la app crea ids dentro del patrón simulado (p. ej. sesión 2.000.176 para el usuario 201). Mitigado en la T08: `cargar_postgres.py` se niega a cargar sobre una BD con datos, así que los sintéticos se cargan siempre de una vez y antes que la app. Los ids de la app siguen dentro del patrón: no deducir el usuario a partir de un id, usar siempre `usuario_id`.
+4. **Tamaño de la BD:** ~0,85 GB por cada 1.000 usuarios en PostgreSQL (Parquet: ~70 MB). Resuelto en la T08: BD de demo de 200 usuarios (~170 MB) con `scripts/crear_bd_demo.sh`.
 5. **La recomendación no tiene consecuencias en la simulación:** los usuarios entrenan igual los días etiquetados "descansar" (44 %). No se puede afirmar que seguir las recomendaciones mejore el progreso. Limitación para la memoria.
 6. **Circularidad:** las relaciones fuerza–fatiga–sueño son reglas inventadas; las métricas miden cuánto aprende el modelo esas reglas. Explicarlo en la memoria.
-7. Probar la escritura Parquet y la carga con psycopg en un equipo con acceso a PyPI. En la T07: carga real probada con `psql` y pruebas automáticas en `train_datos/tests/`, que cubren Parquet y psycopg en cuanto están instalados.
+7. Probar la escritura Parquet y la carga con psycopg en un equipo con acceso a PyPI. Parquet: probado en Linux (T07, 63 pruebas). psycopg: pendiente de la prueba en Linux de la T08.
 8. Tras cambiar parámetros del simulador, volver a pasar `validar.py`.
 9. Hallazgos de la T07 sin abordar (cargas extremas de usuarios "repetidor", RPE con 0 repeticiones, avisos de numpy en `salida.py`): ver `docs/T07_ajustes_simulador_y_dataset.md`, sección 6.
 

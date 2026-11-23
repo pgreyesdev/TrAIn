@@ -9,5 +9,6 @@
 | `openapi.json` | OpenAPI del contrato, generado con `python -m app.mock --export` |
 | `contexto_TrAIn.md` | Resumen del proyecto, decisiones fijadas, estado y pendientes |
 | `T07_ajustes_simulador_y_dataset.md` | T07: cambios del simulador y su motivo, dataset de 10.000 usuarios, métricas y pruebas de `train_datos` |
+| `T08_postgres_docker_bd_demo.md` | T08: PostgreSQL en Docker, BD de demo de 200 usuarios y regla de carga de los datos sintéticos |
 
 Si cambia una decisión, una fecha o un criterio, actualiza `contexto_TrAIn.md`, `CLAUDE.md`, el acta del wiki y el tablero.

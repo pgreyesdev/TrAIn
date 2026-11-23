@@ -1,0 +1,35 @@
+name: train
+
+# PostgreSQL 16 local para desarrollo (T08). Cada miembro levanta su propia BD.
+# Valores por defecto sobrescribibles con un .env en la raíz del repositorio:
+# TRAIN_DB_USER, TRAIN_DB_PASSWORD, TRAIN_DB_NAME, TRAIN_DB_PORT.
+# DSN por defecto: postgresql://train:train@localhost:5432/train
+# El servicio del backend se añadirá en la T13.
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${TRAIN_DB_USER:-train}
+      POSTGRES_PASSWORD: ${TRAIN_DB_PASSWORD:-train}
+      POSTGRES_DB: ${TRAIN_DB_NAME:-train}
+    ports:
+      # Solo en 127.0.0.1: no se expone a la red.
+      - "127.0.0.1:${TRAIN_DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Crea la BD de pruebas train_test. Solo se ejecuta con el volumen vacío
+      # (primer arranque o tras `docker compose down -v`).
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      # Por TCP: durante la inicialización el servidor temporal solo escucha
+      # en el socket local, así que no da "listo" antes de tiempo.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  pgdata:  # se llama train_pgdata (prefijo del proyecto)

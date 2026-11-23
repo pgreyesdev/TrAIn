@@ -75,10 +75,10 @@ train/
 - ~~La regla `MAX_DIAS_SEGUIDOS = 5` choca con la rutina de 6 días (PPL)~~: hecho (`fixed T04`), ahora es 6 para todos.
 - ~~Fijar la semilla por usuario~~: hecho (`fixed T05`). Cada usuario se siembra con `(semilla, id)`.
 - ~~Generar el dataset de entrenamiento~~: hecho y validado (T07, ver `docs/T07_ajustes_simulador_y_dataset.md`). Se regenera idéntico (en Linux) con `python generar.py --usuarios 10000` (no se sube).
-- PostgreSQL en Docker y BD de demo con `--lotes 1` (200 usuarios; unos 0,85 GB por cada 1.000 usuarios).
-- Cargar todos los datos sintéticos **antes** de que la app inserte datos: los ids nuevos siguen el mismo patrón que los simulados.
+- ~~PostgreSQL en Docker y BD de demo~~: hecho (T08, ver `docs/T08_postgres_docker_bd_demo.md`). `docker compose up -d --wait db` y `bash scripts/crear_bd_demo.sh` (200 usuarios, ~170 MB). Los ids de la app caen dentro del patrón sintético: no deducir el usuario a partir de un id, usar siempre `usuario_id`.
+- Cargar todos los datos sintéticos **antes** de que la app inserte datos: `cargar_postgres.py` sin `--crear-esquema` se niega a cargar sobre una BD con datos.
 - Tras cambiar parámetros del simulador, volver a ejecutar `validar.py` y las pruebas.
-- Probar Parquet y psycopg en Linux con `requirements-dev.txt` (cierra el punto 3 de la T07).
+- Parquet probado en Linux (T07). Falta probar psycopg y el arranque con Docker en Linux (T08, sección 6 del documento).
 
 Pruebas de `train_datos`: `cd train_datos && pytest tests` (la carga en PostgreSQL solo con `TRAIN_TEST_DSN` apuntando a una BD `*_test`).
 

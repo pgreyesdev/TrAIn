@@ -112,8 +112,16 @@ python cargar_postgres.py --dsn ... --crear-esquema --lotes 5   # solo 1.000 usu
 Al final se reajustan las secuencias, de modo que la app puede seguir
 insertando usuarios, sesiones y series con ids nuevos.
 
+Sin `--crear-esquema`, no carga nada si alguna tabla ya tiene filas: los ids
+sintéticos chocarían con los ya cargados o con los creados por la app. Los datos
+sintéticos se cargan siempre de una vez, antes de que la app inserte.
+
+Para la BD de demo (200 usuarios en PostgreSQL con Docker) usa
+`bash scripts/crear_bd_demo.sh` desde la raíz del repositorio; ver
+[`docs/T08_postgres_docker_bd_demo.md`](../docs/T08_postgres_docker_bd_demo.md).
+
 Probado con PostgreSQL 16 usando `psql`: unas 50.000 series por segundo. Con
-psycopg debería ir igual o más rápido, pero esa vía no la he podido probar aquí.
+psycopg debería ir igual o más rápido; esa vía queda por probar en Linux.
 
 ## 5. Validar
 
